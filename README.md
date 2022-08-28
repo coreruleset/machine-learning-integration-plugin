@@ -18,7 +18,7 @@ After receiving the response from the server, the lua script sends the status re
 
 ### Flask Server
 This server receives a http POST request from the lua script. It extracts the different parameters from the request. The parameters extracted are request method, path, arguements, file names, file sizes, hour and day. These parameters are sent to a function which is supposed to call a machine learning model. This function has been stubbed by a random function for now. 
-This function is supposed to return a ml_anomaly_score. Based on this score, the server reutrns a 200 OK or 401 status. 
+This function is supposed to return a ml_anomaly_score. Based on this score, the server reuturns a 200 OK or 401 status. 
 
 This workflow has been depicted in the diagram below. 
 
@@ -64,9 +64,9 @@ ModSecurity: Lua: Script execution failed: attempt to call a nil value [hostname
 - helper
 
 ## Configration of the flask server 
-2. Copy the ```ml_model_server``` folder into ```/var/www/html```.
-3. Add your machine learning model in ```ml_model_server/saved_models``` and follow the directives in ```placeholder.py``` to include the model in the server.
-4. Start the flask server. To run the flask server, 
+1. Copy the ```ml_model_server``` folder into ```/var/www/html```.
+2. Add your machine learning model in ```ml_model_server/saved_models``` and follow the directives in ```placeholder.py``` to include the model in the server.
+3. Start the flask server. To run the flask server, 
    1. Create a file ```runflash.sh``` in the home directory.
    2. Add the following lines in the file:
       ```
@@ -75,6 +75,7 @@ ModSecurity: Lua: Script execution failed: attempt to call a nil value [hostname
       ```
    3. Start your virtual environment.
    4. Run the command ``` ./runflash.sh ```
+4. Update the variable ```ml_server_url``` in ```machine-learning-client.lua``` to the url where the server is running on your system.
 5. The plugin is now ready to use.
 
 ## Working
@@ -86,7 +87,7 @@ This plugin works in two modes -
 You can change the mode by going to machine-learning-config.conf and modifying the value of ```machine-learning-plugin_mode```. If the value of this variable is 1 the plugin works in false positive detection mode and if the value of the variable is 2, the plugin works in general detection mode.
 
 ### False Positive Detection Mode
-In mode 1, the requests which have an inbound anomaly score greater than the inbound anomaly threshold are scanned by the machine learning model. Only if the machine learning model give anomaly score greater than the machine learning anomaly threshold the request is blocked. Else, the request is passed and labeled as a false positive.
+In mode 1, the requests which have an inbound anomaly score greater than the inbound anomaly threshold are scanned by the machine learning model. Only if the machine learning model gives an anomaly score greater than the machine learning anomaly threshold the request is blocked. Else, the request is passed and labeled as a false positive.
 
 ### General Detection Mode
 In mode 2, all requests are scanned by the machine learning model and the decision to pass or block the request is made solely by the model. If the machine learning anomaly score crosses the machine learning threshold, the request is blocked.
