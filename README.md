@@ -75,7 +75,7 @@ ModSecurity: Lua: Script execution failed: attempt to call a nil value [hostname
       ```
    3. Start your virtual environment.
    4. Run the command ``` ./runflash.sh ```
-4. Update the variable ```ml_server_url``` in ```machine-learning-client.lua``` to the url where the server is running on your system.
+4. Update the variable ```ml_server_url``` in ```machine-learning-config.conf``` to the url where the server is running on your system.
 5. The plugin is now ready to use.
 
 ## Working
@@ -94,7 +94,7 @@ In mode 2, all requests are scanned by the machine learning model and the decisi
 
 This plugin has been developed without an actual machine learning model in place. Hence, the score has been stubbed to generate a random score. A user can choose to run the plugin with any machine learning model of his/her choice. To do so, directives have been provided in ```placeholder.py``` to add the machine learning model file.
 
-## Testing
+## Testing/
 After configuration, the plugin should be tested in both modes. 
 
 ### False positive detection mode 

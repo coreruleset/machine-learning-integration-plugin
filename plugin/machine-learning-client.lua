@@ -6,6 +6,7 @@
 -- Variable Declarations:
 -- setting the machine learning server URL
 local ml_server_url = 'http://127.0.0.1:5000/'
+local ml_server_url = m.getvar("TX.ml_server_url")
 -- initialising the variable to return the machine learning pass or block status
 local inbound_ml_result = 0
 
