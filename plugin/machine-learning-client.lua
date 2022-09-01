@@ -3,18 +3,15 @@
 -- this ml driver is invoked by machine-learning-plugin-after.conf
 -- currently most of this code is from https://github.com/coreruleset/coreruleset/pull/2067/files
 
--- Variable Declarations:
--- setting the machine learning server URL
-local ml_server_url = 'http://127.0.0.1:5000/'
-local ml_server_url = m.getvar("TX.ml_server_url")
--- initialising the variable to return the machine learning pass or block status
-local inbound_ml_result = 0
-
--- Importing libraries
-local ltn12 = require("ltn12")
-local http = require("socket.http")
-
 function main()
+  -- Variable Declarations:
+  -- setting the machine learning server URL
+  local ml_server_url = m.getvar("TX.ml_server_url")
+  -- initialising the variable to return the machine learning pass or block status
+  local inbound_ml_result = 0
+  -- Importing libraries
+  local ltn12 = require("ltn12")
+  local http = require("socket.http")
   -- Initialising variables
   local method = m.getvar("REQUEST_METHOD")
   local path = m.getvar("REQUEST_FILENAME")
@@ -78,7 +75,8 @@ function main()
   end
 
   -- Construct http request for the ml server
-  body = "method="..method.."&path="..path.."&args="..args_str.."&files="..filesstr.."&sizes="..filesizestr.."&hour="..hour.."&day="..day
+  --body = "method="..method.."&path="..path.."&args="..args_str.."&files="..filesstr.."&sizes="..filesizestr.."&hour="..hour.."&day="..day
+  body = string.format("method=%s&path=%s&args=%s&files=%s&sizes=%s&hour=%s&day=%s", method, path, args_str, filesstr, filesizestr, hour, day)
   headers = {
     ["Content-Type"] = "application/x-www-form-urlencoded";
     ["Content-Length"] = #body
