@@ -13,12 +13,12 @@ The plugin consists of 3 parts -
 The plugin contains rules which call the Lua script and pass or block the request based on the status returned to the rule.
 
 ### Lua Script
-The lua script receives the request from the rule, reads the data sent in the request and reconstructs the request to form a http POST request to be sent to the flask server ```ml_model_server```. 
+The lua script receives the request from the rule, reads the data sent in the request and reconstructs the request to form a http POST request to be sent to the flask server ```ml_model_server``` in the form of a string. 
 After receiving the response from the server, the lua script sends the status response back to the CRS plugin. 
 
 ### Flask Server
-This server receives a http POST request from the lua script. It extracts the different parameters from the request. The parameters extracted are request method, path, arguements, file names, file sizes, hour and day. These parameters are sent to a function which is supposed to call a machine learning model. This function has been stubbed by a random function for now. 
-This function is supposed to return a ml_anomaly_score. Based on this score, the server reuturns a 200 OK or 401 status. 
+This server receives a http POST request from the lua script. It extracts the different parameters from the request. The parameters extracted are request method, path, arguments, file names, file sizes, hour and day. These parameters are sent to a function which is supposed to call a machine learning model. This function has been stubbed by a random function for now. 
+This function is supposed to return a ml_anomaly_score. Based on this score, the server returns a 200 OK or 401 status. 
 
 This workflow has been depicted in the diagram below. 
 
@@ -94,7 +94,7 @@ In mode 2, all requests are scanned by the machine learning model and the decisi
 
 This plugin has been developed without an actual machine learning model in place. Hence, the score has been stubbed to generate a random score. A user can choose to run the plugin with any machine learning model of his/her choice. To do so, directives have been provided in ```placeholder.py``` to add the machine learning model file.
 
-## Testing/
+## Testing
 After configuration, the plugin should be tested in both modes. 
 
 ### False positive detection mode 

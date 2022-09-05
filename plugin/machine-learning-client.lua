@@ -6,13 +6,13 @@
 function main()
   -- Variable Declarations:
   -- setting the machine learning server URL
+  pcall(require, "m")
   local ml_server_url = m.getvar("TX.ml_server_url")
   -- initialising the variable to return the machine learning pass or block status
   local inbound_ml_result = 0
   -- Importing libraries
   local ltn12 = require("ltn12")
   local http = require("socket.http")
-  pcall(require, "m")
   -- Initialising variables
   local method = m.getvar("REQUEST_METHOD")
   local path = m.getvar("REQUEST_FILENAME")
