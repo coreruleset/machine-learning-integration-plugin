@@ -12,6 +12,7 @@ function main()
   -- Importing libraries
   local ltn12 = require("ltn12")
   local http = require("socket.http")
+  pcall(require, "m")
   -- Initialising variables
   local method = m.getvar("REQUEST_METHOD")
   local path = m.getvar("REQUEST_FILENAME")
