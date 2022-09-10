@@ -7,7 +7,7 @@ function main()
   -- Variable Declarations:
   -- setting the machine learning server URL
   pcall(require, "m")
-  local ml_server_url = m.getvar("TX.ml_server_url")
+  local ml_server_url = m.getvar("TX.machine-learning-plugin_ml_server_url")
   -- initialising the variable to return the machine learning pass or block status
   local inbound_ml_result = 0
   -- Importing libraries
@@ -102,7 +102,7 @@ function main()
   if code == 200 then
     inbound_ml_result = 1
   end
-  m.setvar("TX.inbound_ml_anomaly_score", respbody)
-  m.setvar("TX.inbound_ml_status", inbound_ml_result)
+  m.setvar("TX.machine-learning-plugin_inbound_ml_anomaly_score", respbody)
+  m.setvar("TX.machine-learning-plugin_inbound_ml_status", inbound_ml_result)
   return inbound_ml_result
 end
