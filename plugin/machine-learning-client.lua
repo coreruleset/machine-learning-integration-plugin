@@ -83,7 +83,7 @@ function main()
     ["Content-Length"] = #body
   }
   local source = ltn12.source.string(body)
-  local client, code, headers, status = http.request{
+  local client, code, headers, score = http.request{
     url=ml_server_url, 
     method='POST',
     source=source,
@@ -91,18 +91,23 @@ function main()
     sink = ltn12.sink.table(respbody)
   }
   respbody = table.concat(respbody)
-
+  m.log(1, "Client "..client.." Code "..code.."..".." Score "..score)
+  m.log(1, "Respbody "..respbody)
 -- Processing the result
   if client == nil then
     m.log(2, 'The server is unreachable ')
   end
   if code == 401 then
     m.log(1,'Anomaly found by ML')
+    m.setvar("TX.machine-learning-plugin_inbound_anomaly_score", score)
   end
   if code == 200 then
     inbound_ml_result = 1
+    m.setvar("TX.machine-learning-plugin_inbound_anomaly_score", score)
+    m.setvar("TX.machine-learning-plugin_inbound_ml_status", inbound_ml_result)
   end
-  m.setvar("TX.machine-learning-plugin_inbound_ml_anomaly_score", respbody)
-  m.setvar("TX.machine-learning-plugin_inbound_ml_status", inbound_ml_result)
+  --m.setvar("TX.machine-learning-plugin_inbound_anomaly_score", score)
+  --m.setvar("TX.machine-learning-plugin_inbound_ml_status", inbound_ml_result)
+  --m.log(1, "Status "..TX.machine-learning-plugin_inbound_ml_status)
   return inbound_ml_result
 end
