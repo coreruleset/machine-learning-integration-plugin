@@ -90,9 +90,9 @@ function main()
     headers=headers,
     sink = ltn12.sink.table(respbody)
   }
+  m.log(1, "Respbody "..respbody)
   respbody = table.concat(respbody)
   m.log(1, "Client "..client.." Code "..code.."..".." Score "..score)
-  m.log(1, "Respbody "..respbody)
 -- Processing the result
   if client == nil then
     m.log(2, 'The server is unreachable ')
