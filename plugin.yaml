@@ -37,7 +37,12 @@ compatibility:
   crs_version: ">=4.0.0"
 
 configuration:
-  file: "plugins/machine-learning-config.conf"
+  # NOTE: this repo keeps its conf file under `plugin/` (singular), not the
+  # `plugins/` directory convention `plugin-schema.json` expects, so this path
+  # does not satisfy the schema's `configuration.file` pattern. Flagged for a
+  # maintainer decision (rename the directory vs. relax the schema pattern)
+  # rather than papering over it with a path that doesn't exist in this repo.
+  file: "plugin/machine-learning-config.conf"
   variables:
     - name: "tx.machine-learning-plugin_enabled"
       type: "boolean"
