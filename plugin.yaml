@@ -1,0 +1,76 @@
+schema_version: 1
+
+plugin:
+  name: "machine-learning-integration-plugin"
+  description: "Scores requests with a pluggable machine learning model and blocks or reduces false positives based on the resulting anomaly score."
+  long_description: |
+    Integrates a machine learning anomaly model into the CRS request evaluation
+    pipeline. A ModSecurity rule calls a Lua script, which forwards request
+    metadata (method, path, arguments, file names/sizes, hour, day) to an
+    external Flask server over HTTP. The server scores the request with a
+    pluggable ML model and returns a pass/deny status that the plugin rules
+    act on.
+
+    The plugin supports two modes: false positive detection mode, where only
+    requests whose CRS inbound anomaly score already exceeds a threshold are
+    re-checked by the ML model, and general detection mode, where every
+    request is scored by the ML model. The shipped ML server stubs the model
+    with a random score generator; operators supply their own trained model.
+  type: "official"
+  category: "detection"
+  status: "draft"
+  license: "Apache-2.0"
+  authors:
+    - name: "OWASP CRS Team"
+      url: "https://coreruleset.org"
+  repository: "https://github.com/coreruleset/machine-learning-integration-plugin"
+  keywords:
+    - "machine-learning"
+    - "anomaly-detection"
+    - "false-positive-reduction"
+
+rule_id_range:
+  start: 9516000
+  end: 9516999
+
+compatibility:
+  crs_version: ">=4.0.0"
+
+configuration:
+  # NOTE: this repo keeps its conf file under `plugin/` (singular), not the
+  # `plugins/` directory convention `plugin-schema.json` expects, so this path
+  # does not satisfy the schema's `configuration.file` pattern. Flagged for a
+  # maintainer decision (rename the directory vs. relax the schema pattern)
+  # rather than papering over it with a path that doesn't exist in this repo.
+  file: "plugin/machine-learning-config.conf"
+  variables:
+    - name: "tx.machine-learning-plugin_enabled"
+      type: "boolean"
+      default: 1
+      description: "Enable or disable the plugin (0 to disable)"
+      required: false
+
+    - name: "tx.machine-learning-plugin_mode"
+      type: "integer"
+      default: 2
+      min: 1
+      max: 2
+      description: >-
+        Operating mode: 1 = false positive detection mode (only requests
+        whose CRS inbound anomaly score already exceeds the threshold are
+        scored by the ML model), 2 = general detection mode (every request
+        is scored by the ML model)
+
+    - name: "tx.machine-learning-plugin_ml_server_url"
+      type: "string"
+      default: "http://127.0.0.1:5000/"
+      description: "URL of the Flask ml_model_server that scores requests and returns an anomaly status"
+      example: "http://127.0.0.1:5000/"
+
+    - name: "tx.machine-learning-plugin_inbound_ml_threshold"
+      type: "integer"
+      default: 0
+      description: >-
+        Threshold compared against the CRS inbound anomaly score to decide
+        when the ML model should evaluate a request in false positive
+        detection mode (mode 1)
